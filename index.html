@@ -1,0 +1,74 @@
+
+<!doctype html>
+<head>
+	<script src="http://d3js.org/d3.v5.min.js"></script>
+	<style>
+		h1 {
+			text-align: center;
+			font: bold 18px Arial;
+			margin-top: 70px; 
+		}
+		
+		h2 {
+			text-align: center;		
+			padding: 2px;	
+			font: 14px Arial;	
+		}
+		
+		p {
+			text-align: left;
+			margin-left: 300px;
+			margin-right: 300px;
+			padding: 5px;
+			font 12px Arial;
+			
+		}
+		
+		.start {
+			position: relative;
+			text-align: center;	
+		}
+		
+		button {
+			background-color: #4CAF50;
+			border: none;
+			color: white;
+			padding: 15px 32px;
+			text-align: center;
+			text-decoration: none;
+			display: inline-block;
+			font-size: 16px;
+			margin: 4px 2px;
+			border-radius: 5px;
+			cursor: pointer;
+		}
+		
+	</style>
+</head>
+<html>
+<body>
+	<h1>CS416 DATA VISUZLIZATION - FINAL PROJECT</h1>
+	<h2>by YUEH-CHEN TSOU</h2>
+	<h2>DECLINING FERTILITY AND INCREASING LIFE EXPECTANCIES CAUSES ECONOMIC CRISIS</h2>
+	<p><span style="font-weight: bold">Messaging:</span> Giving data of the golabl population ages 0-14, 15-64, and 65 or over from 1960 to 2021. The proportion of 
+			the population aged 65 or over has increased by 1.9192 times compared to 1960, and declining birth rates and increasing life expectancies 
+			results in declining the working-age population.</p>
+	<p><span style="font-weight: bold"> Narrative Structure:</span> The narrative visualization is structured by an interactive slidshow. The main page leads users into
+			the slidshow, and the users can choose any scenes that they might interest to read or investegate the different data.</p>
+	<p><span style="font-weight: bold">Visual Structure:</span> Three scenes are filtered by year to hightlight different detail data from the same chart, so that
+			the viewer can base on hightlight different annotaions and trend to focus on the important part in each scene.  </p>
+	<p><span style="font-weight: bold">Scenes: </span> Scene 1, Scene 2, and Scene 3 are created by the year between 1960 and 1990, 1960 and 2010, and 1960 to 2021, respectively. 
+			The users can follow the order of scenes or choose a scene that they might interest to read. Beccause it would keep viewers from becoming disoriented. </p>
+	<p><span style="font-weight: bold">Annotations:</span> Three scenes are followed for different annotations since they are based on the year filter, so that it can 
+			help the viewer to focus on the new parts of the data in each scene.</p>
+	<p><span style="font-weight: bold">Parameters:</span> 1990, 2010, and 2021 of years are used as parameters to filter out the datapoints by loading a scene. Different year
+			parameters cause to change the datapoints, colors, annotations to present different visuzlizations in each scene. </p>
+	<p><span style="font-weight: bold">Triggers:</span> This project provides three scenes with the option to click a buttom to loading scene carring a parameter 
+			as the trigger connections between    </p>
+	
+	<div class="start">
+		<button onclick="window.location.href = 'scenes.html?years=1990';">Start Scenes</button>
+	</div>
+</body>
+</html>
+

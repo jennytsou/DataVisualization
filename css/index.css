@@ -1,0 +1,90 @@
+
+		body { font: 12px Arial; }
+			
+		.circle65 {fill: #7986db; 
+			stroke: #7986db;
+			}
+			
+		.line65 {
+			stroke: #7986db;
+			stroke-width: 2;
+			fill: none;
+			}
+			
+		.circle64 {fill: #81C784; 
+				stroke: #81C784;
+			}
+			
+		.line64 {
+			stroke: #81C784;
+			stroke-width: 2;
+			fill: none;
+		}
+		
+		.circle14 {fill: #FF8A65; 
+				stroke: #FF8A65;
+			}
+			
+		.line14 {
+			stroke: #FF8A65;
+			stroke-width: 2;
+			fill: none;
+		}
+		
+		.axis path,
+		.axis line {
+			fill: none;
+			stroke: grey;
+			stroke-width: 1;
+			shape-rendering: crispEdges;
+		}
+		
+		.axis text{
+			fill: black;
+			font: 14px Arial;
+		}
+		
+		.title{
+			fill: black;
+			font: 18px sans-serif;
+		}
+
+		
+		#tooltip {
+			position: absolute;	
+			text-align: center;	
+			width: 150px;	
+			height: 50px;		
+			padding: 2px;	
+			font: 14px sans-serif;	
+			background: lightsteelblue;	
+			border: 0px;					
+			border-radius: 8px;
+		}
+		
+		.go {
+			position: relative;
+			text-align: center;	
+		}
+		
+		button {
+			background-color: #4CAF50;
+			border: none;
+			color: white;
+			padding: 15px 32px;
+			text-align: center;
+			text-decoration: none;
+			display: inline-block;
+			font-size: 16px;
+			margin: 4px 2px;
+			border-radius: 5px;
+			cursor: pointer;
+		}
+		
+		.intro {
+			margin-top: 0px;
+			margin-left: 0px;
+			margin-bottom: 0px;
+			font: 16px sans-serif;
+
+		}

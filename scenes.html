@@ -1,0 +1,304 @@
+<!doctype html>
+<head>
+	<meta charset="utf-8">
+	<script src="http://d3js.org/d3.v5.min.js"></script>
+<!--	<script src="https://rawgit.com/susielu/d3-annotation/master/d3-annotation.min.js"></script>	-->
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/d3-annotation/2.5.1/d3-annotation.min.js"></script>
+	
+	<script src="/js/visual.js"></script>
+
+	<link rel="stylesheet" type="text/css" href="css/index.css">
+	
+	<style>
+	
+	</style>
+
+</head>
+<html>
+<body>
+	<div class="container" style="display: flex; height: 225px; mmargin: 0px 0px 0px 0px; border: solid;">
+		<div class="intro" style="width: 50%; background: #ccff33;">
+            <p class="intro" style="font-size: 18px; margin-top: 10px">The global is getting older due to increasing life expectancies and declining birth rates.</p>
+			<ul>
+				<li>The proportion of child population is predicted to decline to 21% in 2050 due to declining birth rates.</li>	
+				<li>The proportion of aging population is predicted to increase further to 16% in 2050 due to life expectancies.</li>
+				<li>One in six people in the world will be aging population by 2050.</li>
+			</ul>
+			<p style="font-size: 18px;">Aging population has increased by 1.9192 times compared to 1960.</p>
+			<ul>
+				<li>The percentage increased from 6% in 1990 to 9% in 2019.</li>
+				<li>The percentage point change from 2011 to 2021 was 1.87.</li>
+			</ul>
+        </div>
+        <div class="intro" style="flex-grow: 1; background: #ffb366">
+			<p style="font-size: 18px; margin-top: 10px;">The proportion of the population aged 0 to 14 in global started to decrease in 1967.</p>
+			<ul>
+				<li>The percentage point change from 2001 to 2010 was -2.8.</li>
+				<li>The percentage point change from 2011 to 2021 was -1.53.</li>
+			</ul>
+			<p style="font-size: 18px;">World population working aged started to increase in 1968 and decline in 2015.</p>
+			<ul>
+				<li>The percentage point change from 2001 to 2010 was 2.2.</li>
+				<li>The percentage point change from 2015 to 2021 was -0.4425.</li>
+				<li>The proportion is decreasing because of declining birth rates and increasing life expectancies.</li>
+			</ul>
+        </div>
+	</div>
+	<div id="tooltip"></div>
+<!--	<div class="intro"></div>	-->
+
+	<script>
+	
+		const urlParams = new URLSearchParams(window.location.search);
+		const years = urlParams.get('years');
+		console.log(years);
+		if (years == null || years == "undefined") { years = 1990; }
+		console.log(years);
+	
+		var margin = {top: 50, right: 350, bottom: 50, left: 200};
+		var width = 1500 - margin.left - margin.right;
+		var height = 420 - margin.top - margin.bottom;
+		
+		var svg = d3.select("body")
+			.append("svg")
+				.attr("width", width + margin.left + margin.right)
+				.attr("height", height + margin.top + margin.bottom)
+			.append("g")
+				.attr("transform", "translate("+ margin.left +", "+ margin.top +")");
+		
+		var parseTime = d3.timeParse("%Y");
+		
+//		<p>Three line charts on the scene include population age 0-14, population age 14-64, and population age 65 or opver, respectively. </p>
+		
+		d3.csv("/dataset/agePopulation.csv").then(function(data){
+			
+			data.forEach(function(d) {
+				d.year = parseTime(d.Year);
+				d.value65 = +d.Age65up;
+				d.value64 = +d.Age15to64;
+				d.value14 = +d.Age0to14;
+			});
+			
+			console.log(data);
+			var sy = parseTime(1960);
+			var ey = parseTime(years);
+				
+			var xExtent = d3.extent(data, d => d.year);
+			xScale = d3.scaleTime().domain([sy, ey]).range([margin.left,width]);
+			
+			var yMax = d3.max(data, d => d.value64);
+			var yMin = d3.min(data, d => d.value65);
+			yScale = d3.scaleLinear().domain([yMin-1.5, yMax+0.5]).range([height,0]);
+			
+			if (years == 1990) { color1="#BF360C"; color2="#1B5E20"; color3="#2B399C"; }
+			else if (years == 2010) { color1="#F4511E"; color2="#43A047"; color3="#3344BB";}
+			else { color1="#FF8A65"; color2="#81C784"; color3="#7986DB";}
+			
+			
+			var tooltip = d3.select("#tooltip")
+				.style("opacity", 0);
+			
+			// x axis
+			svg.append("g")
+				.attr("class", "axis")
+				.attr("transform","translate(0,"+ height +")")
+				.call(d3.axisBottom(xScale))
+				.append("text")
+				.attr("x", ( width + margin.left)/2 )
+				.attr("y", 40)
+				.text( "Year" );
+			
+			// y axis
+			svg.append("g")
+				.attr("class", "axis")
+				.attr("transform","translate("+ margin.left +",0)")
+				.call(d3.axisLeft(yScale))
+				.append("text")
+				.attr("transform", "rotate(-90)")
+				.attr("x", -50)
+				.attr("y", -40)
+				.attr("text-anchor", "end")
+				.text("Percentage of Population");
+				
+		// line chart
+			var line65age = d3.line()
+				.x(function(d,i) { return xScale(d.year);})
+				.y(function(d) { return yScale(d.value65); })
+				.curve(d3.curveMonotoneX);
+				
+			var line64age = d3.line()
+				.x(function(d,i) { return xScale(d.year);})
+				.y(function(d) { return yScale(d.value64); })
+				.curve(d3.curveMonotoneX);
+				
+			var line14age = d3.line()
+				.x(function(d,i) { return xScale(d.year);})
+				.y(function(d) { return yScale(d.value14); })
+				.curve(d3.curveMonotoneX);
+				
+				
+			var svgdot = d3.selectAll("svg")
+				.append("g")
+				.attr("transform","translate("+ margin.left +","+ margin.top +")")
+				.selectAll("circle")
+				.data(data)
+				.enter();
+				
+			var svgline = d3.selectAll("svg")
+				.append("g")
+//				.attr("transform", "translate(0, "+ margin.top +")");
+			
+		<!-- line chart for aged 65 years or over -->	
+			svgdot.append("circle")
+				.attr("class", "circle65")
+				.filter(function(d) { return (d.year <= ey) })
+					.style("fill", function(d) {
+						if (d.year <= parseTime(1990)) { 
+							return "#26399c" 
+							}
+						if (d.year > parseTime(2010)) { return "#7986db" }
+						else { return "#3344bb" }
+					})
+					.attr("cx", function(d,i) { return xScale(d.year); })
+					.attr("cy", function(d) { return yScale(+d.value65); })
+					.attr("r", 4)
+					.on("mouseover", function(d,i) {
+						tooltip.style("opacity",1)
+							.style("left",(d3.event.pageX)+"px")
+							.style("top",(d3.event.pageY)+"px")
+							.html("Population over 65\n" + "Year: " + +d.Year + "\n" + "Pop:" + d.value65);
+						})
+					.on("mouseout", function() { tooltip.style("opacity", 0) });
+	
+			svg.append("path")
+				.datum(data)
+				.attr("class", "line65")
+				.attr("d", line65age);
+		
+		<!-- line chart for population age 15-64 -->
+			svgdot.append("circle")
+				.attr("class", "circle64")
+				.filter(function(d) { return (d.year <= ey) })
+					.style("fill", function(d) {
+						if (d.year <= parseTime(1990)) { 
+							return "#1B5E20" 
+							}
+						if (d.year > parseTime(2010)) { return "#81C784" }
+						else { return "#43A047" }
+					})
+				
+					.attr("cx", function(d,i) { return xScale(d.year); })
+					.attr("cy", function(d) { return yScale(+d.value64); })
+					.attr("r", 4)
+					.on("mouseover", function(d,i) {
+						tooltip.style("opacity",1)
+							.style("left",(d3.event.pageX)+"px")
+							.style("top",(d3.event.pageY)+"px")
+							.html("Population age 15-64\n" + "Year: " + d.Year + "\n" + "Pop:" + d.value64);
+						})
+					.on("mouseout", function() { tooltip.style("opacity", 0) });
+		
+			svg.append("path")
+				.datum(data)
+				.attr("class", "line64")
+				.attr("d", line64age);
+				
+		<!-- line chart for population age 0-14 -->
+			svgdot.append("circle")
+				.attr("class", "circle14")
+				.filter(function(d) { return (d.year <= ey) })
+					.style("fill", function(d) {
+						if (d.year <= parseTime(1990)) { 
+							return "#BF360C" 
+							}
+						if (d.year > parseTime(2010)) { return "#FF8A65" }
+						else { return "#F4511E" }
+					})
+				
+					.attr("cx", function(d,i) { return xScale(d.year); })
+					.attr("cy", function(d) { return yScale(+d.value14); })
+					.attr("r", 4)
+					.on("mouseover", function(d,i) {
+						tooltip.style("opacity",1)
+							.style("left",(d3.event.pageX)+"px")
+							.style("top",(d3.event.pageY)+"px")
+							.html("Population age 0-14\n" + "Year: " + d.Year + "\n" + "Pop:" + d.value14);
+						})
+					.on("mouseout", function() { tooltip.style("opacity", 0) });
+		
+			svg.append("path")
+				.datum(data)
+				.attr("class", "line14")
+				.attr("d", line14age);
+				
+			// legend aged 0-14
+			svg.append("text")
+				.attr("transform", "translate(0,150)")
+				.style("font-size", "18px")
+				.style("fill", color1)
+				.text("Pop. Age 0-14");
+			svg.append("text")	
+				.attr("transform", "translate(0,175)")
+				.style("font-size", "18px")
+				.style("fill", color1)
+				.text(": 1960 - " + years);
+				
+			// legend aged 15-64
+			svg.append("text")
+				.attr("transform", "translate(0,25)")
+				.style("font-size", "18px")
+				.style("fill", color2)
+				.text("Pop. Age 15-64");
+			svg.append("text")	
+				.attr("transform", "translate(0,50)")
+				.style("font-size", "18px")
+				.style("fill", color2)
+				.text(": 1960 - " + years);
+				
+			// legend aged 65 or over
+			svg.append("text")
+				.attr("transform", "translate(0,275)")
+				.attr("class", "legend3")
+				.style("border", "solid")
+				.style("font-size", "18px")
+				.style("fill", color3)
+				.text("Pop. Age 65 or Over");
+			svg.append("text")	
+				.attr("transform", "translate(0,300)")
+				.style("font-size", "18px")
+				.style("fill", color3)
+				.text(": 1960 - " + years);
+		})	
+		
+
+		// Add annotation to the chart
+		
+			if ( years == 1990 ) {
+				const makeAnnotations = d3.annotation()
+					.annotations(annotation1)
+				svg.append("g")
+				.call(makeAnnotations)					}
+			else if ( years == 2010 ) {
+				const makeAnnotations = d3.annotation()
+					.annotations(annotation2)  
+					svg.append("g")
+				.call(makeAnnotations)}
+			else {
+				const makeAnnotations = d3.annotation()	
+					.annotations(annotation3) 
+					svg.append("g")
+				.call(makeAnnotations)}
+		
+	</script>
+	
+	<div class="go"> 
+		<button onclick="window.location.href = 'index.html';">Home</button>
+		<button onclick="window.location.href = 'scenes.html?years=1990';">Scene 1</button>
+		<button onclick="window.location.href = 'scenes.html?years=2010';">Scene 2</button>
+		<button onclick="window.location.href = 'scenes.html?years=2021';">scene 3</button>
+	 </div>
+
+	
+</body>
+</html>
+
