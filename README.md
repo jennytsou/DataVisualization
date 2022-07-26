@@ -1,4 +1,4 @@
-## Analysis of Population Age 0-14, 15-64, and 65 or over
+## Analysis of Global Population Age 0-14, 15-64, and 65 or over
 
 
 ### Two Ways to Run the Project
