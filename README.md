@@ -2,8 +2,9 @@
 
 
 ### Two Ways to Run the Project
-1.  index.html
-2.  scenes.html?years=1990
+I created a HTTP server, then it can be run in web brower.
+1.  http://localhost:8000/index.html
+2.  http://localhost:8000/scenes.html?years=1990
 
 ### Messaging
 Giving data of the global population ages 0-14, 15-64, and 65 or over from 1960 to 2021. My project includes three scenes and a main page, totally. Year 1990, 2010, and 2021 as parameters are used to filter out the datapoints to change states in each scene so that the users can investigate different visualization in each scene.
