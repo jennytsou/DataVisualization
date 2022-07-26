@@ -2,7 +2,6 @@
 <head>
 	<meta charset="utf-8">
 	<script src="http://d3js.org/d3.v5.min.js"></script>
-<!--	<script src="https://rawgit.com/susielu/d3-annotation/master/d3-annotation.min.js"></script>	-->
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/d3-annotation/2.5.1/d3-annotation.min.js"></script>
 	
 	<script src="/js/visual.js"></script>
@@ -36,7 +35,7 @@
 				<li>The percentage point change from 2001 to 2010 was -2.8.</li>
 				<li>The percentage point change from 2011 to 2021 was -1.53.</li>
 			</ul>
-			<p style="font-size: 18px;">World population working aged started to increase in 1968 and decline in 2015.</p>
+			<p style="font-size: 18px;">World population working-age started to increase in 1968 and decline in 2015.</p>
 			<ul>
 				<li>The percentage point change from 2001 to 2010 was 2.2.</li>
 				<li>The percentage point change from 2015 to 2021 was -0.4425.</li>
@@ -45,7 +44,6 @@
         </div>
 	</div>
 	<div id="tooltip"></div>
-<!--	<div class="intro"></div>	-->
 
 	<script>
 	
@@ -67,8 +65,6 @@
 				.attr("transform", "translate("+ margin.left +", "+ margin.top +")");
 		
 		var parseTime = d3.timeParse("%Y");
-		
-//		<p>Three line charts on the scene include population age 0-14, population age 14-64, and population age 65 or opver, respectively. </p>
 		
 		d3.csv("/dataset/agePopulation.csv").then(function(data){
 			
