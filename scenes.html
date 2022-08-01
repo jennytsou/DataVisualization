@@ -66,8 +66,7 @@
 		
 		var parseTime = d3.timeParse("%Y");
 		
-//		d3.csv("/dataset/agePopulation.csv").then(function(data){
-		d3.csv("https://raw.githack.com/jennytsou/DataVisualization/main/dataset/agePopulation.csv").then(function(data){
+		d3.csv("/dataset/agePopulation.csv").then(function(data){
 			
 			data.forEach(function(d) {
 				d.year = parseTime(d.Year);
